@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="stylesheet" href="./bootstrap-4.3.1-dist/css/bootstrap.min.css">
+  <link rel="stylesheet" href="./css/main.css">
+  <title>BPSS - Relayer GUI</title>
+</head>
+
+<body>
+  <div class="container-fluid pt-3">
+    <nav class="navbar navbar-light bg-light">
+      <a class="navbar-brand mx-auto" href="#" style="font-size: 1.5rem !important;">
+        <img src="./static/blockchain.svg" width="35" height="35" class="d-inline-block align-top" alt="">
+        BPSS - Relayer GUI
+      </a>
+    </nav>
+    <div class="card">
+      <div class="card-body">
+        <h5 class="card-title">
+          <ul class="nav justify-content-around tabs" id="toolTab" role="tablist">
+            <li class="nav-item">
+              <a id="nav-hash" class="nav-link borderCenter py-0" data-toggle="tab" href="#hash" role="tab"
+                aria-controls="hash" aria-selected="true" onclick="show_nav('hash')">Hash</a>
+            </li>
+            <li class="nav-item">
+              <a id="nav-send" class="nav-link borderCenter py-0" data-toggle="tab" href="#send" role="tab"
+                aria-controls="send" aria-selected="false" onclick="show_nav('send')">Encrypt</a>
+            </li>
+            <li class="nav-item">
+              <a id="nav-received" class="nav-link borderCenter py-0" data-toggle="tab" href="#received" role="tab"
+                aria-controls="received" aria-selected="false" onclick="show_nav('received')">Send</a>
+            </li>
+            <li class="nav-item">
+              <a id="nav-decode" class="nav-link borderCenter py-0" data-toggle="tab" href="#decode" role="tab"
+                aria-controls="decode" aria-selected="false" onclick="show_nav('decode')">Decrypt</a>
+            </li>
+          </ul>
+        </h5>
+        <div class="tab-content" style="height: 410px;">
+          <div class="tab-pane fade show active" id="hash" role="tabpanel" aria-labelledby="nav-hash">
+            <form class="pt-3">
+              <div class="form-group row">
+                <label for="hashFile" class="col-sm-2 col-form-label">File</label>
+                <div class="col-sm-10">
+                  <div class="custom-file">
+                    <input type="file" class="custom-file-input" id="hashFile" required>
+                    <label id="hash_file_id" class="custom-file-label" for="hashFile">Choose file...</label>
+                  </div>
+                </div>
+              </div>
+              <div class="form-group row">
+                <div class="col-12">
+                  <button type="button" id="hashBtn" class="btn btn-primary float-right">Hash it!</button>
+                </div>
+              </div>
+            </form>
+            <div id="hash_console" class="alert alert-light py-0"></div>
+          </div>
+          <div class="tab-pane fade" id="send" role="tabpanel" aria-labelledby="nav-send">
+            <form class="pt-3">
+              <div class="form-group row">
+                <label for="inputFile" class="col-sm-2 col-form-label">File</label>
+                <div class="col-sm-10">
+                  <div class="custom-file">
+                    <input type="file" class="custom-file-input" id="uploadFile" required>
+                    <label id="send_file_id" class="custom-file-label" for="uploadFile">Choose file...</label>
+                  </div>
+                </div>
+              </div>
+              <div class="form-group row">
+                <label for="inputORCID" class="col-sm-2 col-form-label">ORCID</label>
+                <div class="col-sm-10">
+                  <input class="form-control" id="inputORCID" placeholder="ORCID" required>
+                </div>
+              </div>
+              <div class="form-group row">
+                <label for="inputPrivatekey" class="col-sm-2 col-form-label">Private key</label>
+                <div class="col-sm-10">
+                  <textarea type="password" class="form-control" style="height: 150px;" id="inputPrivatekey"
+                    placeholder="Private key"></textarea>
+                </div>
+              </div>
+              <div class="form-group row">
+                <div class="col-12">
+                  <button type="button" id="sendBtn" class="btn btn-primary float-right">Send!</button>
+                </div>
+              </div>
+            </form>
+            <div id="send_console" class="alert alert-light py-0"></div>
+          </div>
+          <div class="tab-pane fade" id="received" role="tabpanel" aria-labelledby="nav-received">
+            <form class="pt-3">
+              <div class="form-group row">
+                <label for="inputIP" class="col-sm-2 col-form-label">IP Address</label>
+                <div class="col-sm-10">
+                  <input class="form-control" id="inputIP" placeholder="IP Address" required>
+                  <small id="emailHelp" class="form-text text-muted">(default) Using Netcat as transfer tool</small>
+                </div>
+              </div>
+              <div class="form-group row">
+                <div class="col-12">
+                  <button type="button" id="recBtn" class="btn btn-primary float-right">Receive!</button>
+                </div>
+              </div>
+            </form>
+            <div id="rec_console" class="alert alert-light py-0"></div>
+          </div>
+          <div class="tab-pane fade" id="decode" role="tabpanel" aria-labelledby="nav-decode">
+            <form class="pt-3">
+              <div class="form-group row">
+                <label for="inputFile" class="col-sm-2 col-form-label">File</label>
+                <div class="col-sm-10">
+                  <div class="custom-file">
+                    <input type="file" class="custom-file-input" id="decodeFile" required>
+                    <label id="decode_file_id" class="custom-file-label" for="decodeFile">Choose file...</label>
+                  </div>
+                </div>
+              </div>
+              <div class="form-group row">
+                <label for="inputPublickey" class="col-sm-2 col-form-label">Public key</label>
+                <div class="col-sm-10">
+                  <textarea type="password" class="form-control" style="height: 150px;" id="inputPublickey"
+                    placeholder="Public key"></textarea>
+                </div>
+              </div>
+              <fieldset class="form-group">
+                <div class="row">
+                  <legend class="col-form-label col-sm-2 pt-0">Save type</legend>
+                  <div class="col-sm-10">
+                    <div class="form-check">
+                      <input class="form-check-input" type="radio" name="typeRadios" id="gridRadios1" value="txt"
+                        checked>
+                      <label class="form-check-label" for="gridRadios1">
+                        *.txt
+                      </label>
+                    </div>
+                   
+                  </div>
+                </div>
+              </fieldset>
+              <div class="form-group row">
+                <div class="col-12">
+                  <button type="button" id="decodeBtn" class="btn btn-primary float-right">Decode & Save!</button>
+                </div>
+              </div>
+            </form>
+            <div id="decode_console" class="alert alert-light py-0"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <footer class="page-footer font-small blue fixed-bottom">
+      <div class="footer-copyright text-center py-3">© 2019 Copyright:
+        <a href="https://mdbootstrap.com/education/bootstrap/"> Blockchain-based Paper Submission System, LLC.</a>
+      </div>
+    </footer>
+  </div>
+  <script>
+    const $ = document.querySelector.bind(document)
+
+    // Show file to hash
+    $('#hashFile').addEventListener("change", function () {
+      let name = this.files[0].name
+      $('#hash_file_id').innerText = name
+    })
+
+    // Show file to send 
+    $('#uploadFile').addEventListener("change", function () {
+      let name = this.files[0].name
+      $('#send_file_id').innerText = name
+    })
+
+    // Show file to decode 
+    $('#decodeFile').addEventListener("change", function () {
+      let name = this.files[0].name
+      $('#decode_file_id').innerText = name
+    })
+
+    // Show / Hide tabs
+    function show_nav(param) {
+      let navs = document.querySelectorAll('.tab-pane')
+      for (i = 0; i < navs.length; i++) {
+        navs[i].classList.remove('show')
+        navs[i].classList.remove('active');
+      }
+      switch (param) {
+        case 'hash':
+          $('#hash').classList.add('show')
+          $('#hash').classList.add('active')
+          $('#hash').classList.toggle('fade')
+          break;
+        case 'send':
+          $('#send').classList.add('show')
+          $('#send').classList.add('active')
+          $('#send').classList.toggle('fade')
+          break;
+        case 'received':
+          $('#received').classList.add('show')
+          $('#received').classList.add('active')
+          $('#send').classList.toggle('fade')
+          break
+        case 'decode':
+          $('#decode').classList.add('show')
+          $('#decode').classList.add('active')
+          $('#send').classList.toggle('fade')
+          break
+        default:
+          break;
+      }
+    }
+  </script>
+  <script src="./renderer.js"></script>
+</body>
+
+</html>
